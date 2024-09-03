@@ -152,7 +152,7 @@ jobs:
     with:
       environment: development
       version: ${{ github.sha }}
-      matrix: ${{ github.event.inputs.artifact }}
+      artifact: ${{ github.event.inputs.artifact }}
 
 
   deploy-helm-stg:
@@ -165,4 +165,4 @@ jobs:
       version: ${{ github.sha }}
       helm-values-path: ./todoapp/values/stg.yaml
       helm-release-name: todoapp-staging
-      matrix: ${{ github.event.inputs.artifact }}
+      artifact: ${{ github.event.inputs.artifact }}
