@@ -12,7 +12,7 @@ on:
       artifact:
         description: 'Choose the artifact to deploy'
         required: true
-        default: 'ubuntu-3.9'
+        default: 'ubuntu-latest-3.9'
         type: choice
         options: ['ubuntu-latest-3.9', 'ubuntu-latest-3.8', 'windows-latest-3.8', 'windows-latest-3.9']
 concurrency:
@@ -75,15 +75,15 @@ jobs:
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
         with:
-          name: helm-artifacts
-          path: ${{ github.workspace }}-${{ matrix.OsType }}-${{ matrix.PythonVersion }}/helm-charts
+          name: helm-artifacts-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
+          path: ${{ matrix.PythonVersion }}/helm-charts
 
       - name: Upload kind cluster artifact
         if: github.ref_name == 'main'
         uses: actions/upload-artifact@v4
         with:
-          name: kind-cluster
-          path: ${{ github.workspace }}-${{ matrix.OsType }}-${{ matrix.PythonVersion }}/cluster.yml
+          name: kind-cluster-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
+          path: ${{ github.workspace }}/cluster.yml
 
   docker-ci:
     name: Build and Push Image
@@ -95,7 +95,7 @@ jobs:
     - uses: actions/download-artifact@v4
       name: Download python artifacts
       with:
-        name: python-artifacts
+        name: python-artifacts-${{ github.event.inputs.matrix }}
         path: .
 
     - name: Login to Docker Hub
@@ -120,7 +120,7 @@ jobs:
 
     - uses: actions/download-artifact@v4
       with:
-        name: helm-artifacts
+        name: helm-artifacts-${{ github.event.inputs.artifact_matrix }}
         path: .
 
     - name: Set Up Helm
@@ -149,6 +149,8 @@ jobs:
     with:
       environment: development
       version: ${{ github.sha }}
+      artifact_matrix: ${{ github.event.inputs.artifact_matrix }}
+
 
   deploy-helm-stg:
     name: Deploy helm to Staging
@@ -160,3 +162,4 @@ jobs:
       version: ${{ github.sha }}
       helm-values-path: ./todoapp/values/stg.yaml
       helm-release-name: todoapp-staging
+      artifact_matrix: ${{ github.event.inputs.artifact_matrix }}
