@@ -14,7 +14,7 @@ on:
         required: true
         default: 'ubuntu-3.9'
         type: choice
-        options: ['ubuntu-3.9', 'ubuntu-3.8', 'windows-3.8', 'windows-3.9']
+        options: ['ubuntu-latest-3.9', 'ubuntu-latest-3.8', 'windows-latest-3.8', 'windows-latest-3.9']
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -68,7 +68,7 @@ jobs:
       - name: Upload python artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: python-artifacts-${{ matrix.PythonVersion }}
+          name: python-artifacts-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
           path: .
 
       - name: Upload helm artifacts
