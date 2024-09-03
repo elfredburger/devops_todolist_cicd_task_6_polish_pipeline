@@ -14,12 +14,15 @@ on:
         required: true
         default: 'ubuntu-latest-3.9'
         type: choice
-        options: ['ubuntu-latest-3.9', 'ubuntu-latest-3.8', 'windows-latest-3.8', 'windows-latest-3.9']
+        options:
+        - ubuntu-latest-3.8
+        - ubuntu-latest-3.9
+        - windows-latest-3.8
+        - windows-latest-3.9
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env:
-  PythonVersion: 3.8
   DockerImageName: todoapp
 
 jobs:
@@ -76,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: helm-artifacts-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
-          path: ${{ matrix.PythonVersion }}/helm-charts
+          path: ${{ github.workspace }}/helm-charts
 
       - name: Upload kind cluster artifact
         if: github.ref_name == 'main'
