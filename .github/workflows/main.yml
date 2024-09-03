@@ -120,7 +120,7 @@ jobs:
 
     - uses: actions/download-artifact@v4
       with:
-        name: helm-artifacts-${{ github.event.inputs.artifact_matrix }}
+        name: helm-artifacts-${{ github.event.inputs.matrix }}
         path: .
 
     - name: Set Up Helm
@@ -149,7 +149,7 @@ jobs:
     with:
       environment: development
       version: ${{ github.sha }}
-      artifact_matrix: ${{ github.event.inputs.artifact_matrix }}
+      matrix: ${{ github.event.inputs.matrix }}
 
 
   deploy-helm-stg:
@@ -162,4 +162,4 @@ jobs:
       version: ${{ github.sha }}
       helm-values-path: ./todoapp/values/stg.yaml
       helm-release-name: todoapp-staging
-      artifact_matrix: ${{ github.event.inputs.artifact_matrix }}
+      matrix: ${{ github.event.inputs.matrix }}

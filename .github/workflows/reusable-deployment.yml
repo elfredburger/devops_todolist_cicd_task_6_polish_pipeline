@@ -17,7 +17,7 @@ on:
       helm-release-name:
         default: todoapp
         type: string
-      artifact_matrix:
+      matrix:
         default: 'ubuntu-latest-3.9'
         required: true
         type: string
@@ -35,12 +35,12 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: helm-artifacts-${{ github.event.inputs.artifact_matrix }}
+          name: helm-artifacts-${{ github.event.inputs.matrix }}
           path: .
 
       - uses: actions/download-artifact@v4
         with:
-          name: kind-cluster-${{ github.event.inputs.artifact_matrix }}
+          name: kind-cluster-${{ github.event.inputs.matrix }}
           path: .
 
       - name: Set Up Helm
