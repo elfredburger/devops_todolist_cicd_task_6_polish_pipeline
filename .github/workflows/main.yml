@@ -150,7 +150,7 @@ jobs:
     needs: [helm-ci, docker-ci]
     secrets: inherit
     with:
-      environment: development
+      environment: developement
       version: ${{ github.sha }}
       artifact: ${{ github.event.inputs.artifact }}
 
