@@ -68,6 +68,11 @@ jobs:
           --set todoapp.secrets.DB_HOST="${{ secrets.APP_DB_HOST }}" \
           --set todoapp.image.tag=${{ github.sha }}
 
+
+      - name: Get Nodes
+        run:  kubectl get nodes
+
+
       - name: Deploy helm to Development
 
         run: |
